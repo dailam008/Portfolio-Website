@@ -319,7 +319,7 @@ footer a:hover {
                 <a href="https://github.com/dailam008" target="_blank" class="text-light text-decoration-none" title="GitHub">
                     <i class="bi bi-github"></i>
                 </a>
-                <a href="https://linkedin.com/in/dailam008" target="_blank" class="text-light text-decoration-none" title="LinkedIn">
+                <a href="https://www.linkedin.com/in/mochamad-dailam/" target="_blank" class="text-light text-decoration-none" title="LinkedIn">
                     <i class="bi bi-linkedin"></i>
                 </a>
             </div>
