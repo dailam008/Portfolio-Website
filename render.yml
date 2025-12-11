@@ -1,0 +1,46 @@
+apiVersion: v1
+services:
+  - name: portfolio-web
+    type: web
+    plan: free
+    env: docker
+    repo: .
+    autoDeploy: true
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerCommand: apache2-foreground
+    envVars:
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: portfolio-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: portfolio-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: portfolio-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: portfolio-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: portfolio-db
+          property: password
+
+databases:
+  - name: portfolio-db
+    type: postgres
+    plan: free
+    region: singapore
