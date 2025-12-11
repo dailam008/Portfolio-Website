@@ -1,46 +1,31 @@
-apiVersion: v1
 services:
-  - name: portfolio-web
-    type: web
-    plan: free
+  - type: web
+    name: portfolio-laravel
     env: docker
-    repo: .
+    plan: free
     autoDeploy: true
-    region: singapore
-    dockerfilePath: ./Dockerfile
-    dockerCommand: apache2-foreground
+
+    buildCommand: ""
+    startCommand: ""
+
     envVars:
-      - key: APP_KEY
-        generateValue: true
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
       - key: DB_CONNECTION
-        value: pgsql
+        value: mysql
       - key: DB_HOST
-        fromDatabase:
-          name: portfolio-db
-          property: host
+        value: mysql-ce07ab4-dailamalmuhibi008.h.aivencloud.com
       - key: DB_PORT
-        fromDatabase:
-          name: portfolio-db
-          property: port
+        value: 14321
       - key: DB_DATABASE
-        fromDatabase:
-          name: portfolio-db
-          property: database
+        value: defaultdb
       - key: DB_USERNAME
-        fromDatabase:
-          name: portfolio-db
-          property: user
+        value: avnadmin
       - key: DB_PASSWORD
-        fromDatabase:
-          name: portfolio-db
-          property: password
-
-databases:
-  - name: portfolio-db
-    type: postgres
-    plan: free
-    region: singapore
+        sync: false
+      - key: DB_SSL
+        value: true
+      - key: DB_SSL_CA
+        value: /var/www/html/aiven-ca.pem

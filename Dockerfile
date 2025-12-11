@@ -1,25 +1,36 @@
 FROM php:8.2-apache
 
-# INSTALL EXTENSIONS
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    unzip \
-    git \
-    && docker-php-ext-install pdo pdo_pgsql
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip unzip git curl libssl-dev \
+    && docker-php-ext-install pdo_mysql gd \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# ENABLE APACHE MOD_REWRITE
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Enable Apache rewrite
 RUN a2enmod rewrite
 
-# COPY SOURCE
+# Copy Apache config
+COPY docker/apache-laravel.conf /etc/apache2/sites-available/000-default.conf
+
 WORKDIR /var/www/html
+
+# Copy project
 COPY . .
 
-# INSTALL COMPOSER
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-RUN composer install --no-dev --optimize-autoloader
+# Copy Aiven SSL CA
+COPY aiven-ca.pem /var/www/html/aiven-ca.pem
 
-# SET PERMISSIONS
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Install dependencies
+RUN composer install --optimize-autoloader --no-dev
 
-EXPOSE 8080
-CMD ["apache2-foreground"]
+# Permissions
+RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache
+
+EXPOSE 80
