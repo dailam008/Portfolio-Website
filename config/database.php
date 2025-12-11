@@ -59,9 +59,10 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
-        ],
+        // Hapus baris ini: PDO::MYSQL_ATTR_SSL_CA => base_path('DigiCertGlobalRootG2.crt.pem'),
+        // Biarkan array kosong atau masukkan opsi lain yang relevan
+    ]) : [],
+],
 
         'mariadb' => [
             'driver' => 'mariadb',
